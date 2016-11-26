@@ -1,0 +1,20 @@
+Numero de Sensor: 1
+Nombre de Sensor: pt100
+Curva: lineal - Parametros A: 3.00 B: 9.00 C: 2.00
+-----------------------------------------------------
+Numero de Sensor: 2
+Nombre de Sensor: danfoss
+Curva: lineal - Parametros A: 5.00 B: 2.00 C: 6.00
+-----------------------------------------------------
+Numero de Sensor: 3
+Nombre de Sensor: termocupla
+Curva: lineal - Parametros A: 7.00 B: 1.00 C: 5.00
+-----------------------------------------------------
+Numero de Sensor: 4
+Nombre de Sensor: danfoss
+Curva: lineal - Parametros A: 9.00 B: 2.00 C: 6.00
+-----------------------------------------------------
+Numero de Sensor: 5
+Nombre de Sensor: termocupla
+Curva: lineal - Parametros A: 1.00 B: 1.00 C: 5.00
+-----------------------------------------------------
