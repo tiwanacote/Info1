@@ -9,6 +9,7 @@ v.2 - Retardo al inicial Configuracion de Sensores y deteccion de archivo de con
 
 #include"sensorlib.h"
 #define ARCHIVO "sensores.txt"
+#define ID_CONFIG "id_config.txt"
 #define MAX_SENSORES 4			    							
 #define BUFLEN 2048
 #define ARCHIVO_LOG "log.txt"
@@ -16,19 +17,21 @@ v.2 - Retardo al inicial Configuracion de Sensores y deteccion de archivo de con
 #define PRINT_SIZE 100
 #define TIME_CONF 1
 
-int configuracion_sensores(FILE **archivo, FILE **log, Sensor **ptrSensores);
+int configuracion_sensores(FILE **archivo, FILE **log, Sensor **ptrSensores, int id);
 int menu_sensor();
 void imprime(char* texto);
+
 //int kbhit(void);
 
 int main(){
 
 	//variables								
-	FILE *archivo = NULL, *log = NULL;
+	FILE *archivo = NULL, *log = NULL, *id_config = NULL;
 	Sensor *ptrInicial = NULL;
 	char *transmision, texto_log[LOG_SIZE];
 	struct sockaddr_in cliente, servidor;	
-	int descriptor, slen = sizeof(servidor);
+	int descriptor, slen = sizeof(servidor), id;
+	
 	//int contador = 0; 
 	/*
 	//Retardo para ingresar a Configuracion de Sensores
@@ -43,6 +46,19 @@ int main(){
 	if(contador < 5)
 	configuracion_sensores(&archivo, &log, &ptrInicial);*/
 	
+	
+	//inicializando Archivo de configuración de ID
+	imprime("Inicializamos Archivo Log");
+	id_config = fopen(ID_CONFIG, "r");
+	if (id_config == NULL){
+	imprime("NO PUDO ABRIRSE EL ARCHIVO DE CONFIGURACION de ID");
+	return -1;
+	}//fin del if
+	
+	fscanf(id_config,"RPI_ID: %i",&id);
+	fclose(id_config);
+	
+		
 	//inicializando Archivo LOG
 	imprime("Inicializamos Archivo Log");
 	log = fopen(ARCHIVO_LOG, "w+");
@@ -95,12 +111,12 @@ int main(){
 	//transmitimos las mediciones
 	imprime("Transmitiendo Mediciones");
 	while (1) {
-		if(leer_sensores(ptrInicial, &transmision) < 0){	//devuelve -1 si la lista esta vacia
+		if(leer_sensores(ptrInicial, &transmision, id) < 0){	//devuelve -1 si la lista esta vacia
 			imprime("NO HAY SENSORES CARGADOS");
 			break;
 			}//fin del while	
 		else
-			printf("transmitiendo: %s", transmision);
+			//printf("transmitiendo: %s", transmision);
 			if (sendto(descriptor, transmision, strlen(transmision), 0, (struct sockaddr *)&servidor, slen) == -1) {
 			registro(log, "Error al enviar el mensaje por socket\n");
 			return -1;
@@ -110,7 +126,7 @@ int main(){
 }//fin del main
 
 
-int configuracion_sensores(FILE **archivo, FILE **log, Sensor **ptrSensores){
+int configuracion_sensores(FILE **archivo, FILE **log, Sensor **ptrSensores, int id){
 	
 	//VARIABLES------------------------------------------------------------------------------------------------------------
 	int eleccion, numero, contador = 0;
@@ -250,7 +266,7 @@ int configuracion_sensores(FILE **archivo, FILE **log, Sensor **ptrSensores){
 				break;
 			case 9:	//Ver modelo de transmision de datos
 				while (contador < 10){
-					if(leer_sensores(*ptrSensores, &cadena) < 0){	//devuelve -1 si la lista esta vacia
+					if(leer_sensores(*ptrSensores, &cadena, id) < 0){	//devuelve -1 si la lista esta vacia
 						imprime("NO HAY SENSORES CARGADOS");
 						break;
 						}//fin del while	

@@ -20,12 +20,12 @@ v3 - Deteccion de archivo  de configuracion vacio - ver bug en insertar nombre d
 
 
 //DEFINICIONES------------------------------------------------------------------------------------------
-#define RPI_ID 1
+//#define RPI_ID 1
 #define TYPELEN 30				//largo del nombre del tipo de curva
 #define NOMLEN 30				//largo del nombre del sensor
 #define BUFSIZE 100				//largo del buffer de medicion
 #define MAX_SENSOR 5			//numero maximo de sensores conectado en un rpi
-#define SAMPLE_RATE 1			//retardo del simulador
+#define SAMPLE_RATE 0.7			//retardo del simulador
 #define SERVICE_PORT 21234		//puerto del servidor
 #define SERVER_IP "127.0.0.2"	//IP del servidor
 
@@ -546,11 +546,11 @@ float simulador(){
 	//CUERPO DE LA FUNCION--------------------------------------------------------------------------------
 	sleep(SAMPLE_RATE);
 	reloj = clock();
-	return log(reloj);
+	return (50+3*(sin(reloj/9000)));
 	
 }//fin de la funcion
 
-int leer_sensores(Sensor* ptrLee, char** transmision){
+int leer_sensores(Sensor* ptrLee, char** transmision, int rpi_id){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
 	/*Esta funcion escanea las mediciones en volts de todos los sensores, los convierte en la magnitud mensurada en funcion de 
 	la curva de cada sensor, y luego guarda los datos en una cadena, retorna -1 si la lista de sensores esta vacia.-
@@ -572,7 +572,7 @@ int leer_sensores(Sensor* ptrLee, char** transmision){
 		medicion = conversion(simulador(), *ptrLee);
 		//transmision	
 		snprintf(buffer_medicion, sizeof (buffer_medicion),  
-		"\"S_%d_%d\" : %.2f,", RPI_ID, ptrLee->nro, medicion);		//formato
+		"\"S_%d_%d\" : %.2f,", rpi_id, ptrLee->nro, medicion);		//formato
 		strcat(buffer_transmision, buffer_medicion);				//cadena de transmision
 		buffer_medicion[0] = '\0'; 	//limpio buffer													
 		//siguiente sensor																  

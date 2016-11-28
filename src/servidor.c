@@ -28,7 +28,7 @@
 #define SERVICE_PORT 21234		//puerto del servidor
 #define SERVER_IP "127.0.0.2"	//IP del servidor
 //#define TIMESLEEP 1
-#define TIMEPRINT 200
+#define TIMEPRINT 400
 #define BUF_SIZE 2048
 
 void put_to_send(char str_base[], char str_recv[]);
@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
 			//printf("%s (%d bytes)\n", buf, recvlen);
 			str_recv[0] = '\0';
 			strcpy(str_recv, buf);
-			printf("%s\n", str_recv);
+			//printf("%s\n", str_recv);
 			put_to_send(str_transm, str_recv);
 			t_final = clock();		
 			if ( (t_final - t_inicial) > TIMEPRINT ) {
