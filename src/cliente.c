@@ -1,10 +1,20 @@
-/*
-PROBADO EL SABADO 19 DE NOVIEMBRE - transmite al server
-v.1 - Incorporacion de la funcion configuracion_sensores.
-v.2 - Retardo al inicial Configuracion de Sensores y deteccion de archivo de configuracion vacio
-* 
-*    gcc -o cliente1 cliente.c sensorlib.h -lm
-* 
+
+/**
+	\file cliente.c
+	\brief El cliente (RPI) es el encargado de recibir las señales desde los sensores y enviarlos mediante el protocolo de comunicación UDP al Servidor. Contiene el programa “cliente.c” y la librería “sensorlib.h” y realizan las siguientes operaciones:
+	
+	1. Carga automáticamente la configuración de los sensores desde el archivo de configuración de sensores.
+	2. Crea un socket UDP y lo enlaza con el número de puerto del Servidor.
+	3. Hace un barrido (multiplexado) de todos los sensores en un tiempo definido por SAMPLE_RATE utilizando la función leer_sensores() que devuelve un string con formato:
+	   “S_x_y” : z, Donde “x” es el numero de RPI, “y” el numero de sensor y “z” el valor de la medición convertida. Si el RPI  posee más de un sensor el string enviado es un concatenado del formato anterior. Dicha función llama a la subfunción conversion()que se encarga de convertir los valores de entrada, originalmente en unidades de tensión (volts), a valores en términos de temperatura, presión, luz, etc. en función de los parámetros de cada sensor.
+	4. Comienza a enviar los datos de las mediciones por comunicación UDP.
+	Todos estos pasos y los errores, en caso de haberlos, son guardados en un archivo registro log  con fecha, hora, minuto y segundo del evento.
+	
+	COMPILACIÓN:     gcc -o cliente1 cliente.c sensorlib.h -lm
+	  
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\version 1.0.0
 */
 
 #include"sensorlib.h"
@@ -23,7 +33,26 @@ void imprime(char* texto);
 
 //int kbhit(void);
 
-int main(){
+
+/**
+	\fn int main (void)
+	\brief la función main realiza las siguientes secuencias:
+	
+	1. Declaración de variables
+	2. Inicializando Archivo de configuración de ID
+	3. inicializando Archivo LOG
+	4. inicializando Archivo de Configuracion
+	5. cargamos sensores
+	6. inicializacion de socket UDP
+	7. transmitimos las mediciones en loop
+	
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return Retorna siempre cero.
+	\bug Por el momento no encontrados
+*/
+
+int main(void){
 
 	//variables								
 	FILE *archivo = NULL, *log = NULL, *id_config = NULL;
@@ -125,6 +154,15 @@ int main(){
 	return 0;
 }//fin del main
 
+
+/**
+	\fn int configuracion_sensores(FILE **archivo, FILE **log, Sensor **ptrSensores, int id)
+	\brief Por el momento no implementada
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return Retorna cero o uno
+	\bug Por el momento no encontrados
+*/
 
 int configuracion_sensores(FILE **archivo, FILE **log, Sensor **ptrSensores, int id){
 	
@@ -286,6 +324,15 @@ int configuracion_sensores(FILE **archivo, FILE **log, Sensor **ptrSensores, int
 	return 0;
 }
 
+/**
+	\fn int menu_sensor()
+	\brief Por el momento no implementada
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return Retorna selección - int
+	\bug Por el momento no encontrados
+*/
+
 int menu_sensor(){
 	int eleccion;
 	printf("\nCONFIGURACION DE SENSORES:\n\n"
@@ -303,6 +350,10 @@ int menu_sensor(){
 	scanf("%d", &eleccion);
 	return eleccion;
 }//fin del menu
+ 
+ 
+ 
+ 
  /*
 int kbhit(void)
 {

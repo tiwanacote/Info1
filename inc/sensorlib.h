@@ -4,6 +4,16 @@ v1 - Incorporacion de la funcion registro
 v2 - Incorporacion de la funcion imprime
 v3 - Deteccion de archivo  de configuracion vacio - ver bug en insertar nombre de insertar sensor
 */
+
+/**
+	\file sensorlib.h
+	\brief Contiene librerías y estrcturas que usará cliente.c
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\version 1.0.0
+*/
+
+
 //LIBRERIAS-----------------------------------------------------------------------------------------------
 #include<stdio.h>
 #include<stdlib.h>
@@ -30,6 +40,10 @@ v3 - Deteccion de archivo  de configuracion vacio - ver bug en insertar nombre d
 #define SERVER_IP "127.0.0.2"	//IP del servidor
 
 //ESTRUCTURAS--------------------------------------------------------------------------------------------------------------
+/** 
+	\struct curva
+	\brief Tipo de curva que poseen los distintos tipos de sensores.
+*/
 struct curva{
 	char tipo[TYPELEN];
 	float a;					// Parametro de curva "a"
@@ -37,6 +51,10 @@ struct curva{
 	float c;					// Parametro de curva "c"
 	};
 	
+/** 
+	\struct sensor
+	\brief Sensor conectado
+*/
 struct sensor{
 	int nro; 					// Numero de sensor conectado a la Raspberry	
 	char nombre[NOMLEN];		// Nombre de sensor
@@ -47,6 +65,16 @@ struct sensor{
 typedef struct sensor Sensor; 
 
 //FUNCIONES PRINCIPALES---------------------------------------------------------------------------------------------------
+
+
+/**
+	\fn int imprime_sensores(Sensor* ptrInicial)
+	\brief Imprime la lista de sensores por pantalla, retorna -1 si la lista esta vacia.-
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  Entero
+	\bug Por el momento no encontrados
+*/
 
 int imprime_sensores(Sensor* ptrInicial){
 	//DESCRIPCION: -------------------------------------------------------------------------------------------------------
@@ -68,6 +96,15 @@ int imprime_sensores(Sensor* ptrInicial){
 	}//fin del else
 	return 0;
 }//fin de la funcion
+
+/**
+	\fn int ingresar_sensores(Sensor** ptrInicial)
+	\brief Esta funcion permite ingresar sensores de forma continua por teclado e insertarlos en una lista dinamica simple retorna -1 si hay memoria insuficiente para agregar un sensor.
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  Entero
+	\bug Por el momento no encontrados
+*/
 
 int ingresar_sensores(Sensor** ptrInicial){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
@@ -142,6 +179,18 @@ int ingresar_sensores(Sensor** ptrInicial){
 	return 0;
 }//fin de la funcion
 
+/**
+	\fn int importar_sensores(FILE* ptrArchivo, Sensor** ptrInicial)
+	\brief Carga los sensores desde el archivo de configuracion. Retorna -1 si el archivo esta vacio
+	y -2 si la memoria es insuficiente para cargar un sensor
+	ptrArchivo: puntero al archivo registro de sensores
+	ptrPrimero: puntero al primer sensor de la lista.-
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  Entero
+	\bug Por el momento no encontrados
+*/
+
 int importar_sensores(FILE* ptrArchivo, Sensor** ptrInicial){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
 	/*	Carga los sensores desde el archivo de configuracion. Retorna -1 si el archivo esta vacio
@@ -181,6 +230,17 @@ int importar_sensores(FILE* ptrArchivo, Sensor** ptrInicial){
 	return 0;	//importacion exitosa
 }//fin de la funcion
 
+/**
+	\fn int importar_sensores(FILE* ptrArchivo, Sensor** ptrInicial)
+	\brief Esta funcion guarda los sensores de la lista en un archivo de configuracion de sensores.
+	ptrArchivo: puntero al archivo destino
+	ptrPrimero: puntero a la lista de sensores
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  No retorna nada
+	\bug Por el momento no encontrados
+*/
+
 void exportar_sensores(FILE* ptrArchivo, Sensor* ptrInicial){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
 	/*Esta funcion guarda los sensores de la lista en un archivo de configuracion de sensores.
@@ -199,6 +259,16 @@ void exportar_sensores(FILE* ptrArchivo, Sensor* ptrInicial){
 
 }//fin de la funcion exportar sensores
 
+/**
+	\fn int borrar_lista(Sensor** ptrInicial)
+	\brief Esta funcion borra la lista de sensores.
+	ptrinicial: puntero a la lista de sensores
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  No retorna nada
+	\bug Por el momento no encontrados
+*/
+
 int borrar_lista(Sensor** ptrInicial){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
 	/*Esta funcion borra la lista de sensores.
@@ -215,6 +285,17 @@ int borrar_lista(Sensor** ptrInicial){
 	}//fin del while
 	return 0;	
 }//fin de la funcion borrar_lista
+
+/**
+	\fn float conversion(float volts, Sensor sens)
+	\brief Esta funcion convierte una entrada analogica de 10bits al tipo de magnitud del sensor (temp, presion, humedad, etc)
+	volts: entrada
+	sens: sensor transmisor
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  No retorna nada
+	\bug Por el momento no encontrados
+*/
 
 float conversion(float volts, Sensor sens){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
@@ -250,6 +331,16 @@ float conversion(float volts, Sensor sens){
 	return salida;
 }//fin de la funcion
 
+/**
+	\fn void udp_cliente(int *sock, struct sockaddr_in *cliente, struct sockaddr_in *servidor)
+	\brief UDP cliente
+	sens: sensor transmisor
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  No retorna nada
+	\bug Por el momento no encontrados
+*/
+
 void udp_cliente(int *sock, struct sockaddr_in *cliente, struct sockaddr_in *servidor){
 
 	//1. Creamos un socket
@@ -278,6 +369,17 @@ void udp_cliente(int *sock, struct sockaddr_in *cliente, struct sockaddr_in *ser
 }//fin de la funcion
 
 //FUNCIONES AUXILIARES-----------------------------------------------------------------------------------------------------
+
+/**
+	\fn void ingresar_sensor(Sensor* ptrS, int num)
+	\brief Esta funcion almacena los datos ingresados por teclado dentro de una estructura "Sensor" pasado por referencia
+	ptrS: puntero a la estructura "Sensor"
+	num: opcional - permite asignar el numero de sensor antes de llamar la funcion, ingresar 0 para inhabilitar
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  No retorna nada
+	\bug Por el momento no encontrados
+*/
 
 void ingresar_sensor(Sensor* ptrS, int num){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
@@ -318,6 +420,16 @@ void ingresar_sensor(Sensor* ptrS, int num){
 		scanf("%f %f %f", &ptrS->tipo_curva.a, &ptrS->tipo_curva.b, &ptrS->tipo_curva.c);	
 //	ptrS->ptrSiguiente = NULL;
 }//fin de la funcion agregar sensor
+
+/**
+	\fn int insertar_sensor(Sensor** ptrInicial, Sensor* ptrNuevo)
+	\brief Esta funcion inserta un sensor nuevo en una lista de sensores
+	
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  retorna -1 si esta ocupado y 0 si fue cargado
+	\bug Por el momento no encontrados
+*/
 
 int insertar_sensor(Sensor** ptrInicial, Sensor* ptrNuevo){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
@@ -360,6 +472,18 @@ int insertar_sensor(Sensor** ptrInicial, Sensor* ptrNuevo){
 	return 0;
 	}//fin del else
 }//fin de la funcion
+
+/**
+	\fn int eliminar_sensor(Sensor** ptrInicial, int num)
+	\brief Esta funcion permite eliminar un sensor de la lista, retorna el numero borrado, 
+	retorna -1 si en la lista no hay sensores y -2 si no se encontro el sensor 
+	ptrInicial: puntero a la lista de sensores
+	num: numero de sensor
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  entero
+	\bug Por el momento no encontrados
+*/
 
 int eliminar_sensor(Sensor** ptrInicial, int num) {
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
@@ -413,6 +537,17 @@ int eliminar_sensor(Sensor** ptrInicial, int num) {
 	}//fin del else
 } //fin de la funcion
 
+/**
+	\fn Sensor* buscar_sensor(Sensor* ptrInicial, int num)
+	\brief Esta funcion permite busca un sensor de la lista, retorna un puntero al sensor o NULL si no se encuentra
+	ptrInicial: puntero a la lista de sensores
+	num: numero de sensor
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  entero
+	\bug Por el momento no encontrados
+*/
+
 Sensor* buscar_sensor(Sensor* ptrInicial, int num){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
 	//Esta funcion permite busca un sensor de la lista, retorna un puntero al sensor o NULL si no se encuentra
@@ -450,6 +585,17 @@ Sensor* buscar_sensor(Sensor* ptrInicial, int num){
 	} //fin del else
 } //fin de la funcion
 
+/**
+	\fn int modificar_sensor(Sensor* ptrInicial, int num)
+	\brief Esta funcion permite modificar los datos de un sensor, retorna -1 si la lista esta vacia y -2 si no se encontro el sensor
+	ptrInicial: puntero a la lista de sensores
+	num: numero de sensor
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  entero
+	\bug Por el momento no encontrados
+*/
+
 int modificar_sensor(Sensor* ptrInicial, int num){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
 	/*Esta funcion permite modificar los datos de un sensor, retorna -1 si la lista esta vacia y -2 si no se encontro el sensor
@@ -480,6 +626,19 @@ int modificar_sensor(Sensor* ptrInicial, int num){
 		return 0;
 	}//fin del else
 }//fin de la funcion
+
+/**
+	\fn int importar_sensor(FILE* ptrF, Sensor** ptrInicial, int nro_sensor)
+	\brief Importa y agrega a la lista un sensor desde un archivo, 
+	retorna 0 si fue cargado, -1 si el sensor esta existente, -2 si no se encontro y -3 memoria insuficiente.-
+	ptrArchivo: puntero al archivo registro de configuracion de sensores
+	ptrInicial: puntero a la lista de sensores
+	int numero_sensor: numero del sensor buscado
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  entero
+	\bug Por el momento no encontrados
+*/
 
 int importar_sensor(FILE* ptrF, Sensor** ptrInicial, int nro_sensor){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
@@ -536,6 +695,15 @@ int importar_sensor(FILE* ptrF, Sensor** ptrInicial, int nro_sensor){
 	return 0;
 }//fin de la funcion
 
+/**
+	\fn float simulador()
+	\brief Esta funcion simula la señal de entrada analogica de un sensor.-
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  float que simula dato de sensor leido
+	\bug Por el momento no encontrados
+*/
+
 float simulador(){
 	//DESCRIPCION-----------------------------------------------------------------------------------------
 	/*Esta funcion simula la señal de entrada analogica de un sensor.-	*/
@@ -549,6 +717,17 @@ float simulador(){
 	return (50+3*(sin(reloj/9000)));
 	
 }//fin de la funcion
+
+/**
+	\fn int leer_sensores(Sensor* ptrLee, char** transmision, int rpi_id)
+	\brief Esta funcion escanea las mediciones en volts de todos los sensores, los convierte en la magnitud mensurada en funcion de 
+	la curva de cada sensor, y luego guarda los datos en una cadena, retorna -1 si la lista de sensores esta vacia.-
+	ptrLee: puntero a la lista de sensores.-
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  float que simula dato de sensor leido
+	\bug Por el momento no encontrados
+*/
 
 int leer_sensores(Sensor* ptrLee, char** transmision, int rpi_id){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
@@ -585,6 +764,15 @@ int leer_sensores(Sensor* ptrLee, char** transmision, int rpi_id){
 	return 0;
 }//fin de la funcion
 
+/**
+	\fn int imprime_nodo(Sensor* ptrNodo)
+	\brief Imprime el nodo en ingresado
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  Entero 0 si está Ok, -1 si hay problema
+	\bug Por el momento no encontrados
+*/
+
 int imprime_nodo(Sensor* ptrNodo){
 	if(ptrNodo == NULL)
 		return -1;
@@ -597,6 +785,15 @@ int imprime_nodo(Sensor* ptrNodo){
 		return 0;
 	}//fin del else
 }//fin de la funcion
+
+/**
+	\fn void registro(FILE *archivo_log, char *texto)
+	\brief Esta funcion registra un evento con fecha y hora en un archivo registro
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  Nada
+	\bug Por el momento no encontrados
+*/
 
 void registro(FILE *archivo_log, char *texto){
 	//DESCRIPCION----------------------------------------------------------------------------------------------------------
@@ -619,6 +816,15 @@ void imprime(char* texto){
 }//fin de funcion imprime
 
 
+/**
+	\fn void put_to_send(char str_base[], char str_recv[])
+	\brief Prepara envio
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  Nada
+	\bug Por el momento no encontrados
+*/
+
 void put_to_send(char str_base[], char str_recv[]){
 	//subfunciones
 	void cargar_str(char* str_base, char *str_transm);
@@ -635,6 +841,15 @@ void put_to_send(char str_base[], char str_recv[]){
 		if(substr_recv != NULL)	substr_recv = &substr_recv[1];
 		}//fin del while
 }//fin de la funcion put_to_send
+
+/**
+	\fn void cargar_str(char* str_base, char *substr_recv)
+	\brief Carga string
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  Nada
+	\bug Por el momento no encontrados
+*/
 
 void cargar_str(char* str_base, char *substr_recv){
 	//subfunciones
@@ -656,6 +871,15 @@ void cargar_str(char* str_base, char *substr_recv){
 	strcpy(str_base, reemplazar_substr(str_base, cabecera, substr_recv));
 	
 }//fin de la funcion cargar_str
+
+/**
+	\fn char *reemplazar_substr(char *str, char *substr_orig, char *substr_remp)
+	\brief ----
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  puntero a char
+	\bug Por el momento no encontrados
+*/
 
 char *reemplazar_substr(char *str, char *substr_orig, char *substr_remp){
   	//variables

@@ -1,0 +1,11 @@
+digraph "modificar_sensor"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="modificar_sensor",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="buscar_sensor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#a042990d32f327693421d00660cb1835b",tooltip="Esta funcion permite busca un sensor de la lista, retorna un puntero al sensor o NULL si no se encuen..."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="ingresar_sensor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#afd041115ce4566d8d57e9e460519fe2a",tooltip="Esta funcion almacena los datos ingresados por teclado dentro de una estructura \"Sensor\" pasado por r..."];
+}

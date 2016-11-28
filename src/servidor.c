@@ -1,11 +1,25 @@
-/*
-        demo-udp-03: udp-recv: a simple udp server
-	receive udp messages
 
-        usage:  gcc -Wall -g servidor.c sensorlib.h -lzmq -o servidor
 
-        Paul Krzyzanowski
+/**
+	\file servidor.c
+	\brief El Servidor  recibe los datos desde los Clientes (RPI). Puede ser una PC, otra RPI o cualquier dispositivo adecuado que contenga el programa “servidor.c”.
+	Este programa  realiza las siguientes operaciones:
+	1. Crea un socket UDP y lo enlaza con un único puerto bien conocido por los Clientes y con cualquier dirección IP local válida.
+	2. Espera la recepción de datos desde los Clientes.
+	3. Al recibir datos utiliza la función put_to_send()para procesar el string recibido y adaptarla al siguiente formato:
+	   {\"S_1_1\" : 0, \"S_1_2\" : 0, \"S_1_3\" : 0, \"S_2_1\" : 0, \"S_2_2\" : 0, \"S_2_3\" : 0, \"S_3_1\" : 0, \"S_3_2\" : 0, \"S_3_3\" : 0, \"S_3_4\" : 0, \"S_3_5\" : 0}
+       éste formato se encuentra predeterminado en la declaración de la variable str_base, y es necesario para poder enviar los datos a la nube. Dicha función utiliza la subfunción loc_substr()que localiza el subtring dentro formato base y lo reemplaza por substring recibido desde el Cliente con los nuevos valores de medición. Finalmente llama a la subfunción reemplazar_substr()quien se encarga de hacer el reemplazo. Este proceso se puede realizar con múltiples Clientes al mismo tiempo.
+	4. Toda la información recibida por el servidor en un lapso definido en TIME_SEND es enviado con el formato adecuado hacia un programa escrito en lenguaje Pyton mediante el uso de la librería Open Source <zeromq>(que permite conectar códigos en cualquier tipo de plataforma y llevar mensajes a través de TCP/IP). Éste programa retransmite los datos al servidor de “PubNub”. Finalmente, toda esta información es tomada desde el servidor de PubNub” en la nube por la página de la empresa “Freeboard” que nos permite armar un tablero de instrumentos (dashboard) donde se podrán ver las mediciones.
+	
+	COMPILACIÓN:     gcc -Wall -g servidor.c sensorlib.h -lzmq -o servidor
+	  
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\version 1.0.0
 */
+
+
+
 
 
 //LIBRERIAS-----------------------------------------------------------------------------------------------
@@ -125,6 +139,14 @@ int main(int argc, char **argv) {
 
 
 
+/**
+	\fn void put_to_send(char str_base[], char str_recv[])d)
+	\brief Esta función divide el string recibido, lo divide en substrings y los va guardando en un formato predeterminado en función del número de rpi y del sensor.
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return No retorna nada
+	\bug Por el momento no encontrados
+*/
 
 void put_to_send(char str_base[], char str_recv[]){
 	//subfunciones
@@ -142,6 +164,15 @@ void put_to_send(char str_base[], char str_recv[]){
 		if(substr_recv != NULL)	substr_recv = &substr_recv[1];
 		}//fin del while
 }//fin de la funcion put_to_send
+
+/**
+	\fn void cargar_str(char* str_base, char *substr_recv)
+	\brief Carga string
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return  No retorna nada
+	\bug Por el momento no encontrados
+*/
 
 void cargar_str(char* str_base, char *substr_recv){
 	//subfunciones
@@ -163,6 +194,15 @@ void cargar_str(char* str_base, char *substr_recv){
 	strcpy(str_base, reemplazar_substr(str_base, cabecera, substr_recv));
 	
 }//fin de la funcion cargar_str
+
+/**
+	\fn char *reemplazar_substr(char *str, char *substr_orig, char *substr_remp)
+	\brief Esta función reemplaza el substring original por el substring reemplazo.
+	\author Darío Barone (barone.espindola.dario@gmail.com) - Maximiliano Bertotto (bertotto.maximiliano@gmail.com)
+	\date 2016.12.26
+	\return Retorna cero o uno
+	\bug Por el momento no encontrados
+*/
 
 char *reemplazar_substr(char *str, char *substr_orig, char *substr_remp){
   	//variables

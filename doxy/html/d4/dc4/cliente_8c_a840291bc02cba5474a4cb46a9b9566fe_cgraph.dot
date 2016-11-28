@@ -1,0 +1,29 @@
+digraph "main"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="main",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="imprime",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/dc4/cliente_8c.html#a21ef06b2ad16984046e3958d84f60c73"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="registro",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#a6e12e6780e69229df880c284a1306277",tooltip="Esta funcion registra un evento con fecha y hora en un archivo registro. "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="importar_sensores",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#a7b5968b349bde59560af782341bf0882",tooltip="Carga los sensores desde el archivo de configuracion. Retorna -1 si el archivo esta vacio y -2 si la ..."];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="insertar_sensor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#aadf6070bba31d11ac68265456fe5b4b9",tooltip="Esta funcion inserta un sensor nuevo en una lista de sensores. "];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="buscar_sensor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#a042990d32f327693421d00660cb1835b",tooltip="Esta funcion permite busca un sensor de la lista, retorna un puntero al sensor o NULL si no se encuen..."];
+  Node4 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="borrar_lista",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#a75176cb6fcea9cab1f772cbe81450207",tooltip="Esta funcion borra la lista de sensores. ptrinicial: puntero a la lista de sensores. "];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="imprime_sensores",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#ad91ea5888706da1f859276e381044f35",tooltip="Imprime la lista de sensores por pantalla, retorna -1 si la lista esta vacia.-. "];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="udp_cliente",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#aa4c7bce7815bfba3293da01efebe596c",tooltip="UDP cliente sens: sensor transmisor. "];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="leer_sensores",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#a6240a31c91fe260e613d1e6d900f61c0",tooltip="Esta funcion escanea las mediciones en volts de todos los sensores, los convierte en la magnitud mens..."];
+  Node10 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="conversion",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#afbc7d803c29b956fdc177629685fdbca",tooltip="Esta funcion convierte una entrada analogica de 10bits al tipo de magnitud del sensor (temp..."];
+  Node10 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="simulador",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dae/sensorlib_8h.html#acc11dd04ac802dbd69f0589028703d81",tooltip="Esta funcion simula la señal de entrada analogica de un sensor.-. "];
+}
